@@ -1,0 +1,10 @@
+defaults:
+- agent: default
+
+experiment_name: null
+env:
+  max_interactions: 50
+  raise_on_unsafe_syntax: false
+  sparse_reward: false
+  no_code_found_penalty: 0.0
+  execution_failed_penalty: 0.0

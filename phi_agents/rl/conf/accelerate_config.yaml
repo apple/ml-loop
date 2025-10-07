@@ -1,0 +1,39 @@
+compute_environment: LOCAL_MACHINE
+debug: false
+distributed_type: FSDP
+downcast_bf16: "no"
+enable_cpu_affinity: true
+fsdp_config:
+  # fsdp_backward_prefetch_policy: BACKWARD_POST # BACKWARD_POST a bit slower and uses a bit less memory
+  fsdp_backward_prefetch_policy: BACKWARD_PRE
+  fsdp_forward_prefetch: false
+  fsdp_activation_checkpointing: true
+  fsdp_auto_wrap_policy: TRANSFORMER_BASED_WRAP
+  # fsdp_cpu_ram_efficient_loading: true
+  # fsdp_sync_module_states: true
+
+  # Enable this in case of OOMs to trade some throughput for memory.
+  # Example: `accelerate launch --config_file phi_agents/rl/conf/accelerate_config.yaml --num_processes 4 --fsdp_offload_params true ...
+
+  # fsdp_offload_params: true
+
+  fsdp_reshard_after_forward: true
+  fsdp_state_dict_type: SHARDED_STATE_DICT
+  # fsdp_transformer_layer_cls_to_wrap: Qwen2DecoderLayer  <-- should be determined automatically for qwen
+  fsdp_version: 2
+  mixed_precision_policy:
+    param_dtype: bf16 # keep parameter shards in bf16
+    reduce_dtype: bf16 # gradient reduce scatter in bf16
+    buffer_dtype: bf16 # running mean var buffers in bf16
+  use_orig_params: false # (default) do NOT clone fp32 params for the optimizer
+machine_rank: 0
+main_training_function: main
+mixed_precision: bf16
+num_machines: 1
+num_processes: 8
+rdzv_backend: static
+same_network: true
+tpu_env: []
+tpu_use_cluster: false
+tpu_use_sudo: false
+use_cpu: false

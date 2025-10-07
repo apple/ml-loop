@@ -1,0 +1,10 @@
+defaults:
+  - default
+
+total_iterations: 1000
+epochs_per_iteration: 2
+scenarios_per_iteration: 2
+rollouts_per_scenario: 2
+minibatch_size: 4 # divided across GPUs. must be a multiple of world_size
+do_ppo_clipping: True
+ppo_epsilon: 0.2

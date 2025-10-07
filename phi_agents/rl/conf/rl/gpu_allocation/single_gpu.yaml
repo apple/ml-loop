@@ -1,0 +1,2 @@
+inference_gpus: [0]
+learning_gpus: [0]

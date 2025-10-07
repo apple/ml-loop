@@ -1,0 +1,12 @@
+_target_: phi_agents.agent.minimal_vllm_react_agent.MinimalReactAgent
+max_character_prompt_len: 20_000
+max_character_msg_len: 4_000
+min_truncated_block_idx: 5
+max_allowed_appworld_output: 3000 # in num tokens
+# using oc.select which will return Null if we're missing a config key (e.g. we're in AppWorld eval script)
+max_seq_len_tokens: ${safe_min:${oc.select:rl.learning_max_seq_len},${llm.vllm_server.max_model_len}}
+appworld_style_truncation: false
+truncate_at_newline_or_whitespace: true
+recaption: false
+search_method: none
+mode: train

@@ -1,0 +1,9 @@
+defaults:
+  - qwen_2_5_32b_eval
+
+vllm_class:
+  _target_: phi_agents.rl.llm.VLLMQwen3
+  # increased 1500->3200 for thinking mode
+  max_new_tokens: 3200 # In general Qwen 2.5 assistant msg can be up to 8192 tokens
+
+base_model_path: Qwen/Qwen3-32B

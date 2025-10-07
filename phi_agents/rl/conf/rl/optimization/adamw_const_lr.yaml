@@ -1,0 +1,7 @@
+optimizer:
+  _target_: torch.optim.AdamW
+  fused: True
+  weight_decay: 0.01
+  lr: 5e-5
+lr_scheduler:
+  _target_: phi_agents.rl.rl_utils.get_const_lr

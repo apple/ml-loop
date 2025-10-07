@@ -1,0 +1,57 @@
+defaults:
+  - rl/optimization: adamw_const_lr
+  - rl/gpu_allocation: six_learn_two_infer
+  - rl/params: default
+  - llm: qwen_2_5_7b_train
+  - _self_
+
+experiment_name: null
+
+dry_run: false
+
+rl:
+  seed: null
+
+  fsdp: True
+
+  cloud_path: experiments/${experiment_name}/${now:%Y-%m-%d_%H-%M-%S}/
+  max_ckpts: 10 # Max checkpoints to keep during training
+
+  inference_requires_memory_gb: null
+  learning_requires_memory_gb: null
+
+  # whether to collect rollouts for the next iteration during the learning phase
+  async_rollouts: False
+
+  # whether to recompute log probabilities for current policy during training
+  # (not compatible with async_rollouts)
+  recompute_rollout_probs: True
+
+  dtype: bf16
+  # dtype: fp16
+
+  # this is the number of scenario runners per process.
+  # defaults to the total number of vLLM servers on the node.
+  num_scenario_runners: null
+  learning_max_seq_len: null
+
+  # Parameters for early stopping. Early stopping is triggered iff BOTH of the conditions below are met!
+  rollouts_fraction: 1.0 # 1.0 requires all rollouts to be finished, set to e.g. 0.8 to only require 80% of the rollouts to finish across the system
+  rollouts_per_scenario_fraction: 1.0 # 1.0 requires all rollouts per scenario to be finished, set to e.g. 0.5 to only require half scenario rollouts to finish
+
+  # Run a stress test before the beginning of training to determine whether training on the longest
+  # rollouts fits into memory. >1 iterations help understand memory usage after compilation.
+  # Normally this is zero-cost since it runs during vLLM initialization.
+  # Disable if needed by setting to 0 for faster init and debugging.
+  stress_test_iters: 2
+
+  eval:
+    enable: False
+    eval_every_n_iterations: 1 # eval frequency
+
+wandb:
+  enable: True
+  entity: phi-agents
+  project: default_project
+  run: null # if null, this is generated automatically
+  group: null # if null, the group is constructed from task name and other attributes

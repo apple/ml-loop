@@ -1,0 +1,9 @@
+_target_: phi_agents.rl.appworld_scenario_runner.MixtureAppWorldScenarioSampler
+samplers:
+  - _target_: phi_agents.rl.appworld_scenario_runner.AppWorldScenarioSampler
+    dataset_name: train_difficulty_1
+  - _target_: phi_agents.rl.appworld_scenario_runner.AppWorldScenarioSampler
+    dataset_name: train_difficulty_2
+probs:
+  - 0.5
+  - 0.5

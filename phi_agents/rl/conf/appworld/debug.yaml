@@ -1,0 +1,6 @@
+defaults:
+  - agent: default
+
+env:
+  max_interactions: 5
+  raise_on_unsafe_syntax: true

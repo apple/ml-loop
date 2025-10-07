@@ -1,0 +1,2 @@
+learning_gpus: [0,1,2,3]
+inference_gpus: [4,5,6,7]

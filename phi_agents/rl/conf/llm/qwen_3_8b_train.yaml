@@ -1,0 +1,4 @@
+defaults:
+  - qwen_3_8b_eval
+
+temperature: 1.0

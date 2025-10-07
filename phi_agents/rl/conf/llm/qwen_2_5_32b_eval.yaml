@@ -1,0 +1,37 @@
+parameter_count: 32b
+inference_server_class: phi_agents.vllm.vllm_server.VLLMServer
+
+vllm_server:
+  executable: "vllm"
+  max_model_len: 32_768 # Qwen 2.5 max seq len
+  disable_log_stats: True
+  uvicorn_log_level: "warning"
+  max_tries: 500
+  wait_seconds: 3.0
+  enable_lora: True
+  enable_prefix_caching: True
+  max_lora_rank: 16
+  seed: null
+  gpus_per_vllm_server: 4 # NOTE: Used by vllm rollout worker but not by appworld inference
+  torch_dtype: bfloat16
+  eager_mode: False
+  allow_connect_to_existing: True
+vllm_class:
+  _target_: phi_agents.rl.llm.VLLMQwen25
+  max_new_tokens: 1500 # In general Qwen 2.5 assistant msg can be up to 8192 tokens
+  top_p: null
+  top_k: null
+  min_p: null
+  frequency_penalty: null
+base_model_path: Qwen/Qwen2.5-32B-Instruct
+adapter_path: null
+max_gpu_mem_utilization: null
+
+lora_target_modules:
+  ["q_proj", "v_proj", "o_proj", "k_proj", "gate_proj", "up_proj", "down_proj"]
+lora_rank: 16 # higher increases accuracy and memory
+lora_alpha: 32 # usually alpha=2*rank
+lora_dropout: 0.0
+
+compile_torch_model: False
+temperature: 0.1

@@ -1,0 +1,18 @@
+total_iterations: 200
+epochs_per_iteration: 2
+scenarios_per_iteration: 40
+rollouts_per_scenario: 6
+minibatch_size: 32 # divided across GPUs. must be a multiple of world_size
+loss_type: pg_per_token # pg_per_trajectory, pg_per_token
+do_ppo_clipping: True # only for policy gradient losses
+ppo_epsilon: 0.1
+abs_adv_threshold: 0.01
+pos_adv_only: false
+high_kl_threshold: 20.0 # stop training iteration if this KL value is exceeded
+max_grad_norm: 0.1 # gradient clipping
+skip_outlier_grads: False
+rloo_kl_lambda: 0.0 # Must be non-negative
+strictly_on_policy: false
+
+baseline: leave_one_out
+adv_normalization: false

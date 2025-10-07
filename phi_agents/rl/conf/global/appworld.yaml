@@ -1,0 +1,52 @@
+defaults:
+  - /appworld@rl.scenario_runner.appworld_config: default
+  - _self_
+  - /rl/scenario_sampler: appworld_train
+  - /rl/scenario_sampler@rl.eval.scenario_sampler: appworld_dev
+
+experiment_name: "agents-rl-appworld"
+
+rl:
+  learning_max_seq_len: 22000
+
+  inference_requires_memory_gb: 75
+  learning_requires_memory_gb: 75
+
+  extra_appworld_datasets: {}
+
+  scenario_runner:
+    _target_: phi_agents.rl.appworld_scenario_runner.AppWorldScenarioRunner
+
+  eval:
+    enable: True
+    script: phi_agents.envs.appworld.appworld_rl_eval
+    eval_every_n_iterations: 5 # eval frequency during training
+
+    summaries:
+      _target_: phi_agents.evals.appworld_rl_eval.AppworldEvalSummaries
+
+    # local eval process exits after each eval iteration
+    n_iterations: 1
+
+    overrides:
+      llm:
+        temperature: 0.0
+      rl:
+        learning_max_seq_len: null
+        num_scenario_runners: 64
+        params:
+          scenarios_per_iteration: ${appworld_split_to_num_scenarios:${rl.eval.scenario_sampler.dataset_name}}
+          # to reduce variance, we rollout more than once per scenario, eval is fast enough
+          rollouts_per_scenario: 2
+
+        scenario_runner:
+          appworld_config:
+            env:
+              max_interactions: 50
+              sparse_reward: true
+            agent:
+              appworld_style_truncation: false
+              mode: eval
+
+wandb:
+  project: appworld_rl

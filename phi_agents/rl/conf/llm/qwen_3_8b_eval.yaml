@@ -1,0 +1,4 @@
+defaults:
+  - qwen_3_32b_eval
+
+base_model_path: Qwen/Qwen3-8B

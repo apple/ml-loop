@@ -1,0 +1,26 @@
+defaults:
+  - /top_level@_here_: base
+  - /appworld@scenario_runner.appworld_config: default
+  - llm: qwen_2_5_32b_eval
+  - /rl/scenario_sampler@scenario_sampler: appworld_dev
+  - _self_
+
+log_dir: appworld-results/${now:%Y-%m-%d_%H-%M-%S}/
+wandb_project: phi-agents
+
+experiment_name: appworld_inference
+
+eval_seed: 0
+
+num_scenario_runners: 64
+
+scenario_runner:
+  _target_: phi_agents.rl.appworld_scenario_runner.AppWorldScenarioRunner
+  appworld_config:
+    experiment_name: ${experiment_name}
+    agent:
+      mode: eval
+
+# This stops hydra from creating the output/ directory
+hydra:
+  output_subdir: null
